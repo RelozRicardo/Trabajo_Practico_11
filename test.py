@@ -23,6 +23,9 @@ from pytc2.cuadripolos import Z2Tabcd_s, Y2Tabcd_s, Tabcd2Z_s, Tabcd2Y_s
 from pytc2.cuadripolos import calc_MAI_impedance_ij, calc_MAI_vtransf_ij_mn, calc_MAI_ztransf_ij_mn
 from pytc2.general import print_latex
 
+import scipy.signal as sig
+from pytc2.sistemas_lineales import analyze_sys
+
 # Activar la impresión en formato LaTeX
 init_printing()
 # Definir la variable simbólica s
@@ -33,7 +36,7 @@ numerador = (s**2 + 1)*(s**2 + 3)
 denominador = s *(s**2 + 2.5)
 Z11 = numerador / denominador
 
-print_subtitle('Impedancia de entrada a la red')
+print('Impedancia de entrada a la red')
 print_latex(a_equal_b_latex_s('Z(s)', Z11))
 
 ##/////////////////////////////////////////////////////////////////////////////
@@ -116,7 +119,7 @@ display(d)
 ##/////////////////////////////////////////////////////////////////////////////
 ##/////////////////////////////////////////////////////////////////////////////
 
-print_subtitle('Calculos de verificacion')
+print('Calculos de verificacion')
 
 Za1,Zb1 = sp.symbols('Za1 , Zb1', complex=True)
 Za2,Zb2 = sp.symbols('Za2 , Zb2', complex=True)
@@ -147,6 +150,12 @@ num , den = Tt_ori.as_numer_denom()
 
 print_latex(a_equal_b_latex_s('TtEJ_{11}', sp.factor(sp.simplify(sp.expand(Tt_ori)))) )
 
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
 
+V2V1 = sig.TransferFunction( [1, 0, 11, 0, 18], [1 , 0, 4, 0, 3] )
 
+analyze_sys(V2V1)
 

@@ -23,6 +23,9 @@ from pytc2.cuadripolos import Z2Tabcd_s, Y2Tabcd_s, Tabcd2Z_s, Tabcd2Y_s
 from pytc2.cuadripolos import calc_MAI_impedance_ij, calc_MAI_vtransf_ij_mn, calc_MAI_ztransf_ij_mn
 from pytc2.general import print_latex
 
+import scipy.signal as sig
+from pytc2.sistemas_lineales import analyze_sys
+
 # Activar la impresión en formato LaTeX
 init_printing()
 # Definir la variable simbólica s
@@ -33,7 +36,7 @@ denominador = (s**2 + 2)*(s**2 + 5)
 numerador = s *(3*s**2 + 7)
 YY = numerador / denominador
 
-print_subtitle('Admitancia de entrada a la red')
+print('Admitancia de entrada a la red')
 
 print_latex(a_equal_b_latex_s('Y(s)', YY))
 
@@ -164,3 +167,14 @@ print_latex(a_equal_b_latex_s('Y_{11}', sp.factor(sp.simplify(sp.expand(Ytee[0])
 
 print_latex(a_equal_b_latex_s('Y_{21}', sp.factor(sp.simplify(sp.expand(Ytee[2])))) )
 
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
+##/////////////////////////////////////////////////////////////////////////////
+
+Y11 = sig.TransferFunction( [3, 0, 7, 0], [1 , 0, 7, 0, 10] )
+
+Y21 = sig.TransferFunction( [3, 0, 7, 0], [1 , 0, 7, 0, 10] )
+
+analyze_sys(Y11)
+analyze_sys(Y21)
